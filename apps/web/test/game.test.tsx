@@ -123,7 +123,7 @@ describe('GamePage', () => {
   it('shows an authentication form without a token and loads state after login', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce({ ok: true, json: async () => ({ token: 'new-token', player }) })
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ player }) });
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ player: { ...player, username: 'alice' } }) });
     vi.stubGlobal('fetch', fetchMock);
 
     await act(async () => root.render(<GamePage />));
@@ -142,6 +142,19 @@ describe('GamePage', () => {
     }));
     expect(container.textContent).toContain('alice · 筑基 · 在线');
     expect(container.textContent).toContain('等级 12');
+  });
+
+  it('uses the username from the initially loaded player with a persisted token', async () => {
+    localStorage.setItem('cultivation.token', 'stored-token');
+    const persistedPlayer = { ...player, username: 'persisted-user' };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: persistedPlayer }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.textContent).toContain('persisted-user · 筑基 · 在线');
   });
 
   it('renders an accessible authentication card with credential hints and a mode toggle', async () => {

@@ -4,11 +4,12 @@ import { MeditationPanel } from '../components/MeditationPanel';
 import { PlayerStatsPanel } from '../components/PlayerStatsPanel';
 import { useHeartbeat } from '../hooks/useHeartbeat';
 
+type DisplayPlayer = PlayerState & { username?: string };
+
 export function GamePage() {
   const [token, setToken] = useState(() => playerClient.getToken());
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [username, setUsername] = useState('修行者');
-  const [player, setPlayer] = useState<PlayerState>();
+  const [player, setPlayer] = useState<DisplayPlayer>();
   const [error, setError] = useState<string>();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [isBreakingThrough, setIsBreakingThrough] = useState(false);
@@ -42,7 +43,6 @@ export function GamePage() {
     try {
       if (authMode === 'login') await playerClient.login(credentials);
       else await playerClient.register(credentials);
-      setUsername(credentials.username);
       setToken(playerClient.getToken());
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : '认证失败');
@@ -103,7 +103,7 @@ export function GamePage() {
         <div className="game-header__copy">
           <p className="game-kicker">Cultivation Online</p>
           <h1>修仙文字游戏</h1>
-          <p className="game-subtitle">{username} · {player.realm} · {player.isOnline ? '在线' : '离线'}</p>
+          <p className="game-subtitle">{player.username ?? '修行者'} · {player.realm} · {player.isOnline ? '在线' : '离线'}</p>
         </div>
         <div className="game-header__mark" aria-hidden="true">道</div>
       </header>
