@@ -203,7 +203,7 @@ git commit -m "feat: polish cultivation game page layout"
 **文件：**
 - 验证：`apps/web/src/`、`apps/web/test/`、`compose.yaml`
 
-- [ ] **步骤 1：运行完整测试**
+- [x] **步骤 1：运行完整测试**
 
 ```bash
 npm test
@@ -211,7 +211,7 @@ npm test
 
 预期：所有服务端、规则包和前端测试通过。
 
-- [ ] **步骤 2：运行构建与 Lint**
+- [x] **步骤 2：运行构建与 Lint**
 
 ```bash
 npm run build
@@ -220,7 +220,7 @@ npm run lint
 
 预期：TypeScript、Vite 和 ESLint 均无错误。
 
-- [ ] **步骤 3：构建 Docker Web 服务**
+- [x] **步骤 3：构建 Docker Web 服务**
 
 ```bash
 docker compose build web
@@ -229,7 +229,7 @@ docker compose up -d web
 
 确认 `http://localhost:5173` 可访问，浏览器窄屏尺寸下没有横向滚动条。
 
-- [ ] **步骤 4：同步 CodeGraph 并检查工作树**
+- [x] **步骤 4：同步 CodeGraph 并检查工作树**
 
 ```bash
 codegraph sync .
@@ -240,7 +240,7 @@ git status --short
 
 预期：CodeGraph 显示索引最新，差异无空白错误。
 
-- [ ] **步骤 5：Commit**
+- [x] **步骤 5：Commit**
 
 ```bash
 git add apps/web/src apps/web/test
