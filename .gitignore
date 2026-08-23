@@ -17,6 +17,11 @@ coverage/
 # Local CodeGraph indexes and isolated worktrees
 .codegraph/
 .worktrees/
+agent_config
+.gitignore
+修仙游戏数值设计.md
+docs
+
 
 # Local Docker Compose overrides
 compose.override.yaml
