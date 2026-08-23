@@ -112,7 +112,7 @@ git commit -m "feat: redesign player stats panel"
 - 修改：`apps/web/src/pages/GamePage.tsx`
 - 测试：`apps/web/test/game.test.tsx`
 
-- [ ] **步骤 1：编写突破状态和进度断言**
+- [x] **步骤 1：编写突破状态和进度断言**
 
 增加测试覆盖：
 
@@ -124,7 +124,7 @@ expect(screen.getByRole('button', { name: '突破' })).toBeTruthy();
 
 并验证 `breakthrough.canBreakthrough === true` 时按钮可用，`false` 时按钮保持禁用。
 
-- [ ] **步骤 2：运行测试确认新增断言失败**
+- [x] **步骤 2：运行测试确认新增断言失败**
 
 运行：
 
@@ -134,7 +134,7 @@ npm test -- --run apps/web/test/game.test.tsx
 
 预期：新的面板标题和统计标签尚不存在，测试失败。
 
-- [ ] **步骤 3：实现修炼面板结构**
+- [x] **步骤 3：实现修炼面板结构**
 
 将现有段落改为：
 
@@ -150,11 +150,11 @@ npm test -- --run apps/web/test/game.test.tsx
 
 进度条宽度直接使用 `levelProgress.required > 0` 时的 `current / required` 展示比例；100 级或 `required === 0` 时使用满进度或封顶状态，不改变服务端数值，仅用于视觉表现。
 
-- [ ] **步骤 4：实现突破按钮状态样式**
+- [x] **步骤 4：实现突破按钮状态样式**
 
 使用 `breakthrough.canBreakthrough` 和 `isBreakingThrough` 控制现有 `disabled` 行为；可突破时增加 `button-primary button-breakthrough` class，不可突破时显示禁用原因，执行中显示“突破中…”。
 
-- [ ] **步骤 5：运行测试并 Commit**
+- [x] **步骤 5：运行测试并 Commit**
 
 ```bash
 npm test -- --run apps/web/test/game.test.tsx
