@@ -261,6 +261,125 @@ h2 {
   gap: var(--space-4);
 }
 
+.meditation-panel {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.panel-eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aura-total {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid rgba(98, 245, 200, 0.36);
+  border-radius: var(--radius-md);
+  background: radial-gradient(circle at 85% 20%, rgba(98, 245, 200, 0.18), transparent 50%), rgba(7, 11, 24, 0.38);
+  box-shadow: var(--shadow-aura);
+}
+
+.aura-total span,
+.rate-grid span,
+.breakthrough-block span,
+.progress-block__heading span {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.aura-total strong {
+  color: var(--cyan-green);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1;
+}
+
+.rate-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.rate-grid > div,
+.breakthrough-block {
+  border: 1px solid rgba(112, 127, 205, 0.3);
+  border-radius: var(--radius-sm);
+  background: rgba(7, 11, 24, 0.32);
+}
+
+.rate-grid > div {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+}
+
+.rate-grid strong,
+.breakthrough-block strong,
+.progress-block__heading strong {
+  color: var(--text-primary);
+}
+
+.progress-block {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.progress-block__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.progress-track {
+  height: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(98, 245, 200, 0.24);
+  border-radius: 999px;
+  background: rgba(7, 11, 24, 0.68);
+}
+
+.progress-track__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #36cfa5, var(--cyan-green));
+  box-shadow: 0 0 1rem rgba(98, 245, 200, 0.56);
+  transition: width 240ms ease;
+}
+
+.breakthrough-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.breakthrough-block > div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.button-primary.button-breakthrough {
+  width: auto;
+  min-width: 6.5rem;
+  color: #2d2107;
+  background: var(--gold);
+  box-shadow: 0 0 2rem var(--gold-soft);
+}
+
+.button-primary.button-breakthrough:hover:not(:disabled) {
+  background: #ffdc8f;
+  box-shadow: 0 0 2.5rem rgba(244, 199, 108, 0.3);
+}
+
 .panel-heading,
 .realm-summary,
 .stat-grid,
@@ -538,8 +657,17 @@ main:has(> form) > form label {
 
   .realm-summary,
   .stat-grid,
-  .combat-grid {
+  .combat-grid,
+  .rate-grid {
     grid-template-columns: 1fr;
+  }
+
+  .breakthrough-block {
+    grid-template-columns: 1fr;
+  }
+
+  .button-primary.button-breakthrough {
+    width: 100%;
   }
 
   .stat-grid h3,

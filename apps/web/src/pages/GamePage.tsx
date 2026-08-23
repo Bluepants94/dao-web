@@ -84,7 +84,7 @@ export function GamePage() {
   }
 
   return (
-    <main>
+    <main className="game-page">
       <h1>修仙文字游戏</h1>
       {error && <p role="alert">{error}</p>}
       <PlayerStatsPanel player={player} />

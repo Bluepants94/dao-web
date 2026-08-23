@@ -75,13 +75,34 @@ describe('GamePage', () => {
     expect(container.textContent).toContain('暴击率 12%');
     expect(container.textContent).toContain('闪避率 8%');
     expect(container.textContent).toContain('当前灵气 480');
-    expect(container.textContent).toContain('在线速度 10');
-    expect(container.textContent).toContain('离线速度 4');
+    expect(container.textContent).toContain('灵气进度');
+    expect(container.textContent).toContain('在线获取');
+    expect(container.textContent).toContain('离线获取');
     expect(container.textContent).toContain('480 / 1000');
     expect(container.textContent).toContain('可突破至筑基四层');
-    expect(container.querySelector('button')?.textContent).toBe('突破');
+    const breakthroughButton = container.querySelector<HTMLButtonElement>('button');
+    expect(breakthroughButton?.textContent).toBe('突破');
+    expect(breakthroughButton?.disabled).toBe(false);
     expect(container.textContent).not.toContain('开始打坐');
     expect(container.textContent).not.toContain('停止打坐');
+  });
+
+  it('keeps the breakthrough button disabled when a breakthrough is unavailable', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        player: {
+          ...player,
+          breakthrough: { canBreakthrough: false, description: '灵气不足，无法突破' },
+        },
+      }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector<HTMLButtonElement>('button')?.disabled).toBe(true);
+    expect(container.textContent).toContain('灵气不足，无法突破');
   });
 
   it('requests a breakthrough and refreshes state after the button is pressed', async () => {
