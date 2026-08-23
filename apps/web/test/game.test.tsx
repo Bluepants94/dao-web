@@ -56,23 +56,87 @@ describe('GamePage', () => {
 
     await act(async () => root.render(<GamePage />));
 
+    expect(container.querySelector('[aria-label="角色属性"]')).not.toBeNull();
+    expect(container.textContent).toContain('等级摘要');
+    expect(container.textContent).toContain('境界摘要');
+    expect(container.textContent).toContain('在线');
+    expect(container.textContent).toContain('基础属性');
+    expect(container.textContent).toContain('战斗属性');
+    expect(container.textContent).toContain('暴击率 12%');
+    expect(container.textContent).toContain('闪避率 8%');
+
     expect(container.textContent).toContain('等级 12');
     expect(container.textContent).toContain('筑基');
+    expect(container.textContent).toContain('层数 3');
+    expect(container.querySelector('header.game-header .status-badge.status-online')).not.toBeNull();
     expect(container.textContent).toContain('HP 10540');
     expect(container.textContent).toContain('MP 6510');
     expect(container.textContent).toContain('攻击 2480');
     expect(container.textContent).toContain('防御 1039');
     expect(container.textContent).toContain('速度 2015');
-    expect(container.textContent).toContain('暴击 12%');
-    expect(container.textContent).toContain('闪避 8%');
+    expect(container.textContent).toContain('暴击率 12%');
+    expect(container.textContent).toContain('闪避率 8%');
     expect(container.textContent).toContain('当前灵气 480');
-    expect(container.textContent).toContain('在线速度 10');
-    expect(container.textContent).toContain('离线速度 4');
+    expect(container.textContent).toContain('灵气进度');
+    expect(container.textContent).toContain('在线获取');
+    expect(container.textContent).toContain('离线获取');
     expect(container.textContent).toContain('480 / 1000');
+    const progressBar = container.querySelector<HTMLElement>('[role="progressbar"]');
+    expect(progressBar?.getAttribute('aria-valuemax')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuenow')).toBe('48');
     expect(container.textContent).toContain('可突破至筑基四层');
-    expect(container.querySelector('button')?.textContent).toBe('突破');
+    const breakthroughButton = container.querySelector<HTMLButtonElement>('button');
+    expect(breakthroughButton?.textContent).toBe('突破');
+    expect(breakthroughButton?.disabled).toBe(false);
     expect(container.textContent).not.toContain('开始打坐');
     expect(container.textContent).not.toContain('停止打坐');
+  });
+
+  it('keeps the breakthrough button disabled when a breakthrough is unavailable', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        player: {
+          ...player,
+          breakthrough: { canBreakthrough: false, description: '灵气不足，无法突破' },
+        },
+      }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector<HTMLButtonElement>('button')?.disabled).toBe(true);
+    expect(container.textContent).toContain('灵气不足，无法突破');
+  });
+
+  it('uses an offline status badge in the game header when the player is offline', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: { ...player, isOnline: false } }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('header.game-header .status-badge.status-offline')).not.toBeNull();
+    expect(container.querySelector('header.game-header .status-badge')?.textContent).toBe('离线');
+  });
+
+  it('uses a stable 0-100 capped progress range when no further progress is required', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: { ...player, levelProgress: { current: 0, required: 0 } } }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    const progressBar = container.querySelector<HTMLElement>('[role="progressbar"]');
+    expect(progressBar?.getAttribute('aria-valuemin')).toBe('0');
+    expect(progressBar?.getAttribute('aria-valuemax')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuenow')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuetext')).toBe('已达当前境界上限');
   });
 
   it('requests a breakthrough and refreshes state after the button is pressed', async () => {
@@ -93,7 +157,7 @@ describe('GamePage', () => {
   it('shows an authentication form without a token and loads state after login', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce({ ok: true, json: async () => ({ token: 'new-token', player }) })
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ player }) });
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ player: { ...player, username: 'alice' } }) });
     vi.stubGlobal('fetch', fetchMock);
 
     await act(async () => root.render(<GamePage />));
@@ -110,7 +174,53 @@ describe('GamePage', () => {
       method: 'POST',
       body: JSON.stringify({ username: 'alice', password: 'secret' }),
     }));
+    expect(container.textContent).toContain('alice · 筑基 · 层数 3 在线');
     expect(container.textContent).toContain('等级 12');
+  });
+
+  it('uses the username from the initially loaded player with a persisted token', async () => {
+    localStorage.setItem('cultivation.token', 'stored-token');
+    const persistedPlayer = { ...player, username: 'persisted-user' };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: persistedPlayer }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.textContent).toContain('persisted-user · 筑基 · 层数 3 在线');
+  });
+
+  it('renders an accessible authentication card with credential hints and a mode toggle', async () => {
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('section.auth-card[aria-label="身份验证"]')).not.toBeNull();
+    expect(container.querySelector<HTMLInputElement>('input[name="username"]')?.placeholder).toBe('请输入用户名');
+    expect(container.querySelector<HTMLInputElement>('input[name="password"]')?.placeholder).toBe('请输入密码');
+    expect(container.querySelector<HTMLButtonElement>('button[type="button"]')?.textContent).toBe('注册');
+  });
+
+  it('keeps the authentication form available when login fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 401, json: async () => ({}) }));
+
+    await act(async () => root.render(<GamePage />));
+
+    const form = container.querySelector('form');
+    await act(async () => form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+
+    expect(container.querySelector('[role="alert"]')?.textContent).toContain('请求失败（401）');
+    expect(container.querySelector('form')).not.toBeNull();
+  });
+
+  it('shows the loading shell while the player state is loading', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockReturnValue(new Promise(() => undefined)));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('main.loading-shell')).not.toBeNull();
+    expect(container.querySelector('.loading-orb')).not.toBeNull();
+    expect(container.querySelector('[role="status"]')?.textContent).toContain('正在加载角色状态');
   });
 });
 
