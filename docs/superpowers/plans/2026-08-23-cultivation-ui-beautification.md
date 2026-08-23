@@ -34,15 +34,15 @@
 - 创建：`apps/web/src/styles.css`
 - 修改：`apps/web/src/main.tsx`
 
-- [ ] **步骤 1：确认样式入口当前没有主题样式依赖**
+- [x] **步骤 1：确认样式入口当前没有主题样式依赖**
 
 检查 `main.tsx` 只挂载 `App`，确认样式文件可作为唯一全局入口，避免重复导入。
 
-- [ ] **步骤 2：创建 CSS 主题变量和基础布局**
+- [x] **步骤 2：创建 CSS 主题变量和基础布局**
 
 定义 `:root` 颜色、间距、圆角和阴影变量；实现 `body` 的深色背景、背景光晕、默认字体、按钮和输入框基础状态；实现 `.game-shell`、`.game-header`、`.game-layout` 的桌面/移动端布局。
 
-- [ ] **步骤 3：引入样式并运行前端构建**
+- [x] **步骤 3：引入样式并运行前端构建**
 
 在 `main.tsx` 增加：
 
@@ -52,7 +52,7 @@ import './styles.css';
 
 运行 `npm run build`，确认 CSS 被 Vite 正常打包。
 
-- [ ] **步骤 4：Commit**
+- [x] **步骤 4：Commit**
 
 ```bash
 git add apps/web/src/main.tsx apps/web/src/styles.css
