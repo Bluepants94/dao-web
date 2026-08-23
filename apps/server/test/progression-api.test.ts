@@ -104,6 +104,20 @@ describe('progression service and API', () => {
     await app.close();
   });
 
+  it('returns an internal server error when registration storage fails', async () => {
+    const repository = new InMemoryRepository();
+    repository.createPlayer = async () => { throw new Error('DATABASE_FAILURE'); };
+    const app = buildServer({ repository, rules });
+
+    const response = await app.inject({ method: 'POST', url: '/api/auth/register', payload: {
+      username: 'player_001', password: 'a secure password',
+    } });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.json()).toEqual({ error: 'INTERNAL_SERVER_ERROR' });
+    await app.close();
+  });
+
   it('does not auto-break through, but accepts an explicit breakthrough after settlement', async () => {
     let now = new Date('2026-08-23T00:00:00.000Z');
     const app = buildServer({ repository: new InMemoryRepository(), rules, now: () => now });

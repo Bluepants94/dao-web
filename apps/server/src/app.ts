@@ -45,7 +45,10 @@ export const buildServer = ({ repository, rules, now = () => new Date() }: AppDe
       const result = await auth.register(input.username, input.password, now());
       return reply.code(201).send({ token: result.token, player: toPublicPlayer(result.player, now(), rules.describe?.(result.player)) });
     } catch (error) {
-      return reply.code((error as Error).message === 'USERNAME_TAKEN' ? 409 : 400).send({ error: (error as Error).message });
+      const message = (error as Error).message;
+      if (message === 'USERNAME_TAKEN') return reply.code(409).send({ error: message });
+      if (message === 'INVALID_CREDENTIALS') return reply.code(400).send({ error: message });
+      return reply.code(500).send({ error: 'INTERNAL_SERVER_ERROR' });
     }
   });
   app.post('/api/auth/login', async (request, reply) => {

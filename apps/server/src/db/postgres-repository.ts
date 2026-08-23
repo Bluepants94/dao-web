@@ -35,8 +35,9 @@ export class PostgresRepository implements PlayerRepository {
 
   async createPlayer(input: CreatePlayerInput): Promise<Player> {
     try {
+      const timestamp = input.now.toISOString();
       const rows = await this.client.sql.unsafe<PlayerRow[]>(`INSERT INTO players (id, username, password_hash, level, aura_milli, last_seen_at, last_settled_at, progression_version, breakthrough_status)
-        VALUES ($1, $2, $3, 1, 0, $4, $4, 1, 'locked') RETURNING ${PLAYER_COLUMNS}`, [randomUUID(), input.username, input.passwordHash, input.now]);
+        VALUES ($1, $2, $3, 1, 0, $4, $4, 1, 'locked') RETURNING ${PLAYER_COLUMNS}`, [randomUUID(), input.username, input.passwordHash, timestamp]);
       return mapPlayer(rows[0]);
     } catch (error) {
       if ((error as { code?: string }).code === '23505') throw new Error('USERNAME_TAKEN');
@@ -68,7 +69,7 @@ export class PostgresRepository implements PlayerRepository {
       if (!rows[0]) throw new Error('PLAYER_NOT_FOUND');
       const player = mapPlayer(rows[0]);
       const result = await operation(player);
-      await transaction`UPDATE players SET level = ${player.level}, aura_milli = ${player.auraMilli}, last_seen_at = ${player.lastSeenAt}, last_settled_at = ${player.lastSettledAt}, progression_version = ${player.progressionVersion}, breakthrough_status = ${player.breakthroughStatus} WHERE id = ${player.id}`;
+      await transaction`UPDATE players SET level = ${player.level}, aura_milli = ${player.auraMilli}, last_seen_at = ${player.lastSeenAt.toISOString()}, last_settled_at = ${player.lastSettledAt.toISOString()}, progression_version = ${player.progressionVersion}, breakthrough_status = ${player.breakthroughStatus} WHERE id = ${player.id}`;
       return result;
     }) as Promise<T>;
   }
