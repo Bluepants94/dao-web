@@ -65,11 +65,11 @@ git commit -m "feat: add cultivation game visual theme"
 - 修改：`apps/web/src/components/PlayerStatsPanel.tsx`
 - 测试：`apps/web/test/game.test.tsx`
 
-- [ ] **步骤 1：编写失败的渲染断言**
+- [x] **步骤 1：编写失败的渲染断言**
 
 使用现有 `player` fixture 渲染 `GamePage`，断言页面包含等级摘要、境界摘要、在线状态、`HP`、`攻击`、`暴击率` 和 `闪避率` 的可访问文本，并断言属性分组标题存在。
 
-- [ ] **步骤 2：运行前端测试确认断言失败**
+- [x] **步骤 2：运行前端测试确认断言失败**
 
 运行：
 
@@ -79,7 +79,7 @@ npm test -- --run apps/web/test/game.test.tsx
 
 预期：新增的分组标题或展示文本尚不存在，测试失败。
 
-- [ ] **步骤 3：实现属性面板结构**
+- [x] **步骤 3：实现属性面板结构**
 
 将单一段落列表改为：
 
@@ -94,11 +94,11 @@ npm test -- --run apps/web/test/game.test.tsx
 
 继续从 `player` 读取所有数值；在线状态使用 `status-badge status-online` 或 `status-badge status-offline` class，不添加前端状态推导。
 
-- [ ] **步骤 4：补充面板视觉样式并运行测试**
+- [x] **步骤 4：补充面板视觉样式并运行测试**
 
 为 `.stats-panel`、`.realm-summary`、`.stat-grid`、`.stat-card`、`.combat-grid` 和状态徽标添加卡片、边框、发光和响应式样式，运行同一测试文件确认通过。
 
-- [ ] **步骤 5：Commit**
+- [x] **步骤 5：Commit**
 
 ```bash
 git add apps/web/src/components/PlayerStatsPanel.tsx apps/web/test/game.test.tsx apps/web/src/styles.css
