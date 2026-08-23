@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "maxLevel": 100,
+  "levelsPerRealm": 10,
+  "baseMultiplier": 100,
+  "realmMultiplier": 1.55,
+  "auraRealmMultiplier": 1.12,
+  "criticalRateCapBps": 1500,
+  "evasionRateCapBps": 800,
+  "realms": [
+    "炼气", "筑基", "金丹", "元婴", "化神",
+    "炼虚", "合体", "大乘", "渡劫", "真仙"
+  ]
+}

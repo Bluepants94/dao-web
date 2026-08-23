@@ -1,0 +1,23 @@
+version: 1
+project: cultivation-idle-game
+agents:
+  - id: supervisor
+    role: global_supervisor
+    status: active
+    scope: orchestration
+  - id: rules_dev_01
+    role: game_rules
+    status: idle
+    scope: packages/game-rules
+  - id: backend_dev_01
+    role: backend
+    status: idle
+    scope: apps/server
+  - id: frontend_dev_01
+    role: frontend
+    status: idle
+    scope: apps/web
+  - id: reviewer_01
+    role: reviewer
+    status: idle
+    scope: repository

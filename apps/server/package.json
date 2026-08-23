@@ -1,0 +1,28 @@
+{
+  "name": "@cultivation/server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "db:migrate": "tsx src/db/migrate.ts",
+    "dev": "tsx watch src/index.ts",
+    "build": "npm run typecheck",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cultivation/game-rules": "0.1.0",
+    "@cultivation/shared": "0.1.0",
+    "@fastify/cors": "^10.0.1",
+    "drizzle-orm": "^0.36.4",
+    "fastify": "^5.2.1",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
