@@ -314,7 +314,8 @@ main:has(> section) > section:last-of-type button:hover:not(:disabled) {
   box-shadow: 0 0 2.5rem rgba(244, 199, 108, 0.3);
 }
 
-.status-message {
+.status-message,
+[role="alert"] {
   margin: 0 0 var(--space-4);
   padding: 0.85rem 1rem;
   border: 1px solid rgba(255, 157, 157, 0.5);
@@ -323,7 +324,8 @@ main:has(> section) > section:last-of-type button:hover:not(:disabled) {
   background: rgba(108, 36, 63, 0.34);
 }
 
-.loading-message {
+.loading-message,
+[role="status"] {
   width: min(100%, 34rem);
   margin: 0 auto;
   padding: 1.25rem;
