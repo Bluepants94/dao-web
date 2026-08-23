@@ -127,6 +127,28 @@ input:focus {
   padding: clamp(1.5rem, 4vw, 4rem) 0;
 }
 
+.auth-shell,
+.loading-shell {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+}
+
+.loading-orb {
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 0.35rem solid rgba(98, 245, 200, 0.2);
+  border-top-color: var(--cyan-green);
+  border-radius: 50%;
+  box-shadow: var(--shadow-aura);
+  animation: loading-orb-spin 900ms linear infinite;
+}
+
+@keyframes loading-orb-spin {
+  to { transform: rotate(1turn); }
+}
+
 main {
   width: min(100% - 2rem, 76rem);
   min-height: 100vh;
@@ -552,6 +574,10 @@ main:has(> section) > section:last-of-type button:hover:not(:disabled) {
 .auth-card {
   width: min(100%, 30rem);
   margin: 0 auto;
+}
+
+.auth-card .game-subtitle {
+  margin-bottom: var(--space-5);
 }
 
 main:has(> form) > form {

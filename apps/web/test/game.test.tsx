@@ -140,7 +140,40 @@ describe('GamePage', () => {
       method: 'POST',
       body: JSON.stringify({ username: 'alice', password: 'secret' }),
     }));
+    expect(container.textContent).toContain('alice · 筑基 · 在线');
     expect(container.textContent).toContain('等级 12');
+  });
+
+  it('renders an accessible authentication card with credential hints and a mode toggle', async () => {
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('section.auth-card[aria-label="身份验证"]')).not.toBeNull();
+    expect(container.querySelector<HTMLInputElement>('input[name="username"]')?.placeholder).toBe('请输入用户名');
+    expect(container.querySelector<HTMLInputElement>('input[name="password"]')?.placeholder).toBe('请输入密码');
+    expect(container.querySelector<HTMLButtonElement>('button[type="button"]')?.textContent).toBe('注册');
+  });
+
+  it('keeps the authentication form available when login fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 401, json: async () => ({}) }));
+
+    await act(async () => root.render(<GamePage />));
+
+    const form = container.querySelector('form');
+    await act(async () => form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+
+    expect(container.querySelector('[role="alert"]')?.textContent).toContain('请求失败（401）');
+    expect(container.querySelector('form')).not.toBeNull();
+  });
+
+  it('shows the loading shell while the player state is loading', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockReturnValue(new Promise(() => undefined)));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('main.loading-shell')).not.toBeNull();
+    expect(container.querySelector('.loading-orb')).not.toBeNull();
+    expect(container.querySelector('[role="status"]')?.textContent).toContain('正在加载角色状态');
   });
 });
 
