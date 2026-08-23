@@ -74,14 +74,3 @@ docker compose down
 ```bash
 docker compose down -v
 ```
-
-## CodeGraph
-
-仓库使用 CodeGraph（代码图谱）维护代码结构索引：
-
-```bash
-codegraph index
-codegraph explore "<文件名或符号名>"
-```
-
-`.codegraph/` 已加入 `.gitignore`，索引文件仅用于本地开发。
