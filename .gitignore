@@ -1,7 +1,35 @@
-.codegraph/
+# Dependencies and package-manager state
 node_modules/
+.pnpm-store/
+.npm/
+
+# Build and test output
 dist/
+build/
 coverage/
-.env
 *.tsbuildinfo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Local CodeGraph indexes and isolated worktrees
+.codegraph/
 .worktrees/
+
+# Local Docker Compose overrides
+compose.override.yaml
+docker-compose.override.yml
+
+# Logs and runtime files
+*.log
+logs/
+*.pid
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
