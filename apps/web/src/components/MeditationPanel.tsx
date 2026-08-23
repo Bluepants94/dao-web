@@ -51,9 +51,9 @@ export function MeditationPanel({ player, onBreakthrough, isBreakingThrough }: M
           role="progressbar"
           aria-label="等级升级进度"
           aria-valuemin={0}
-          aria-valuemax={isCapped ? levelProgress.current : levelProgress.required}
-          aria-valuenow={levelProgress.current}
-          aria-valuetext={isCapped ? '已达当前境界上限' : `${levelProgress.current} / ${levelProgress.required}`}
+          aria-valuemax={100}
+          aria-valuenow={progressPercent}
+          aria-valuetext={isCapped ? '已达当前境界上限' : `${Math.round(progressPercent)}%（${levelProgress.current} / ${levelProgress.required}）`}
         >
           <div className="progress-track__fill" style={{ width: `${progressPercent}%` }} />
         </div>

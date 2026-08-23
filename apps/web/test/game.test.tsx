@@ -67,6 +67,8 @@ describe('GamePage', () => {
 
     expect(container.textContent).toContain('等级 12');
     expect(container.textContent).toContain('筑基');
+    expect(container.textContent).toContain('层数 3');
+    expect(container.querySelector('header.game-header .status-badge.status-online')).not.toBeNull();
     expect(container.textContent).toContain('HP 10540');
     expect(container.textContent).toContain('MP 6510');
     expect(container.textContent).toContain('攻击 2480');
@@ -79,6 +81,9 @@ describe('GamePage', () => {
     expect(container.textContent).toContain('在线获取');
     expect(container.textContent).toContain('离线获取');
     expect(container.textContent).toContain('480 / 1000');
+    const progressBar = container.querySelector<HTMLElement>('[role="progressbar"]');
+    expect(progressBar?.getAttribute('aria-valuemax')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuenow')).toBe('48');
     expect(container.textContent).toContain('可突破至筑基四层');
     const breakthroughButton = container.querySelector<HTMLButtonElement>('button');
     expect(breakthroughButton?.textContent).toBe('突破');
@@ -103,6 +108,35 @@ describe('GamePage', () => {
 
     expect(container.querySelector<HTMLButtonElement>('button')?.disabled).toBe(true);
     expect(container.textContent).toContain('灵气不足，无法突破');
+  });
+
+  it('uses an offline status badge in the game header when the player is offline', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: { ...player, isOnline: false } }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    expect(container.querySelector('header.game-header .status-badge.status-offline')).not.toBeNull();
+    expect(container.querySelector('header.game-header .status-badge')?.textContent).toBe('离线');
+  });
+
+  it('uses a stable 0-100 capped progress range when no further progress is required', async () => {
+    localStorage.setItem('cultivation.token', 'test-token');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ player: { ...player, levelProgress: { current: 0, required: 0 } } }),
+    }));
+
+    await act(async () => root.render(<GamePage />));
+
+    const progressBar = container.querySelector<HTMLElement>('[role="progressbar"]');
+    expect(progressBar?.getAttribute('aria-valuemin')).toBe('0');
+    expect(progressBar?.getAttribute('aria-valuemax')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuenow')).toBe('100');
+    expect(progressBar?.getAttribute('aria-valuetext')).toBe('已达当前境界上限');
   });
 
   it('requests a breakthrough and refreshes state after the button is pressed', async () => {
@@ -140,7 +174,7 @@ describe('GamePage', () => {
       method: 'POST',
       body: JSON.stringify({ username: 'alice', password: 'secret' }),
     }));
-    expect(container.textContent).toContain('alice · 筑基 · 在线');
+    expect(container.textContent).toContain('alice · 筑基 · 层数 3 在线');
     expect(container.textContent).toContain('等级 12');
   });
 
@@ -154,7 +188,7 @@ describe('GamePage', () => {
 
     await act(async () => root.render(<GamePage />));
 
-    expect(container.textContent).toContain('persisted-user · 筑基 · 在线');
+    expect(container.textContent).toContain('persisted-user · 筑基 · 层数 3 在线');
   });
 
   it('renders an accessible authentication card with credential hints and a mode toggle', async () => {

@@ -103,7 +103,12 @@ export function GamePage() {
         <div className="game-header__copy">
           <p className="game-kicker">Cultivation Online</p>
           <h1>修仙文字游戏</h1>
-          <p className="game-subtitle">{player.username ?? '修行者'} · {player.realm} · {player.isOnline ? '在线' : '离线'}</p>
+          <p className="game-subtitle">
+            {player.username ?? '修行者'} · {player.realm} · 层数 {player.layer}{' '}
+            <span className={`status-badge ${player.isOnline ? 'status-online' : 'status-offline'}`}>
+              {player.isOnline ? '在线' : '离线'}
+            </span>
+          </p>
         </div>
         <div className="game-header__mark" aria-hidden="true">道</div>
       </header>
