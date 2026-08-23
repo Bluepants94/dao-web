@@ -56,6 +56,15 @@ describe('GamePage', () => {
 
     await act(async () => root.render(<GamePage />));
 
+    expect(container.querySelector('[aria-label="角色属性"]')).not.toBeNull();
+    expect(container.textContent).toContain('等级摘要');
+    expect(container.textContent).toContain('境界摘要');
+    expect(container.textContent).toContain('在线');
+    expect(container.textContent).toContain('基础属性');
+    expect(container.textContent).toContain('战斗属性');
+    expect(container.textContent).toContain('暴击率 12%');
+    expect(container.textContent).toContain('闪避率 8%');
+
     expect(container.textContent).toContain('等级 12');
     expect(container.textContent).toContain('筑基');
     expect(container.textContent).toContain('HP 10540');
@@ -63,8 +72,8 @@ describe('GamePage', () => {
     expect(container.textContent).toContain('攻击 2480');
     expect(container.textContent).toContain('防御 1039');
     expect(container.textContent).toContain('速度 2015');
-    expect(container.textContent).toContain('暴击 12%');
-    expect(container.textContent).toContain('闪避 8%');
+    expect(container.textContent).toContain('暴击率 12%');
+    expect(container.textContent).toContain('闪避率 8%');
     expect(container.textContent).toContain('当前灵气 480');
     expect(container.textContent).toContain('在线速度 10');
     expect(container.textContent).toContain('离线速度 4');

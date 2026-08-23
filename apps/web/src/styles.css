@@ -256,6 +256,100 @@ h2 {
   letter-spacing: 0.04em;
 }
 
+.stats-panel {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.panel-heading,
+.realm-summary,
+.stat-grid,
+.combat-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.panel-heading {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.panel-heading h2 {
+  margin-bottom: 0;
+}
+
+.realm-summary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-3);
+  border: 1px solid rgba(98, 245, 200, 0.22);
+  border-radius: var(--radius-md);
+  background: rgba(17, 22, 59, 0.68);
+}
+
+.realm-summary > div,
+.stat-card {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.summary-label,
+.stat-card span {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.realm-summary strong,
+.stat-card strong {
+  color: var(--text-primary);
+}
+
+.stat-grid,
+.combat-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat-grid h3,
+.combat-grid h3 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--cyan-green);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+.stat-card {
+  min-height: 4.25rem;
+  padding: var(--space-3);
+  border: 1px solid rgba(112, 127, 205, 0.3);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(145deg, rgba(29, 38, 94, 0.72), rgba(12, 17, 44, 0.72));
+  box-shadow: 0 0 1.5rem rgba(98, 245, 200, 0.05);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.status-online {
+  color: var(--cyan-green);
+  background: var(--cyan-green-soft);
+  box-shadow: 0 0 1.25rem rgba(98, 245, 200, 0.16);
+}
+
+.status-offline {
+  color: var(--text-muted);
+  background: rgba(112, 127, 205, 0.12);
+}
+
 .game-layout p {
   display: flex;
   justify-content: space-between;
@@ -440,6 +534,17 @@ main:has(> form) > form label {
 
   .auth-form__actions {
     grid-template-columns: 1fr;
+  }
+
+  .realm-summary,
+  .stat-grid,
+  .combat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid h3,
+  .combat-grid h3 {
+    grid-column: auto;
   }
 }
 
