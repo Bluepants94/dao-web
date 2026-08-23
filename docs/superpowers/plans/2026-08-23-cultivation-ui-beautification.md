@@ -169,19 +169,19 @@ git commit -m "feat: redesign meditation progression panel"
 - 修改：`apps/web/src/styles.css`
 - 测试：`apps/web/test/game.test.tsx`
 
-- [ ] **步骤 1：编写认证和错误状态断言**
+- [x] **步骤 1：编写认证和错误状态断言**
 
 验证未登录时存在 `auth-card` 语义区域、用户名和密码输入框、登录/注册切换按钮；验证 `role="alert"` 错误提示存在且不会移除表单。
 
-- [ ] **步骤 2：实现认证页视觉结构**
+- [x] **步骤 2：实现认证页视觉结构**
 
 将未登录分支包装为 `.auth-shell` 和 `.auth-card`，增加副标题、输入框提示文本、表单按钮组和错误提示容器；不改变现有 `authMode`、`handleAuthentication` 和 API 调用。
 
-- [ ] **步骤 3：实现加载页和游戏页外壳**
+- [x] **步骤 3：实现加载页和游戏页外壳**
 
 将加载分支使用 `.loading-shell`、`.loading-orb` 和 `role="status"`；登录后使用 `.game-shell`、`.game-header`、`.game-layout` 包裹两个面板，并在 header 中显示用户名、境界和在线状态。
 
-- [ ] **步骤 4：运行前端测试确认认证行为不回归**
+- [x] **步骤 4：运行前端测试确认认证行为不回归**
 
 运行：
 
@@ -191,7 +191,7 @@ npm test -- --run apps/web/test/game.test.tsx
 
 预期：认证提交、错误展示、突破点击和状态加载测试全部通过。
 
-- [ ] **步骤 5：Commit**
+- [x] **步骤 5：Commit**
 
 ```bash
 git add apps/web/src/pages/GamePage.tsx apps/web/src/styles.css apps/web/test/game.test.tsx
